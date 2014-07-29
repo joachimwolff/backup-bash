@@ -21,7 +21,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="/home/leo/bash/backup"
+exec="path/to/backup"
 prog="backup"
 
 
