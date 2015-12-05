@@ -15,7 +15,7 @@ trap 'kill -HUP 0' EXIT
 #FUNCTION TO USE RYSNC TO BACKUP DIRECTORIES
 function backup () {
 
-if rsync -avz --delete $backup_dir $server_backup_dir  &>>$log_dir
+if rsync -avz --delete $backup_dir $server_backup_dir  2>&1 >>$log_dir
 then
 du -sh $backup_dir| mail -s "backup succeeded $backup_dir" $email
 else
@@ -36,7 +36,7 @@ do
 backup  || exit 0
 
 #START RSYNC AND TRIGGER BACKUP ON CHANGE
-inotifywait -r -e modify,attrib,close_write,move,create,delete  --format '%T %:e %f' --timefmt '%c' $backup_dir  &>>$log_dir && backup
+inotifywait -r -e modify,attrib,close_write,move,create,delete  --format '%T %:e %f' --timefmt '%c' $backup_dir  2>&1 >>$log_dir && backup
 
 done
 
