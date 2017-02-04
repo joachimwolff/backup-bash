@@ -4,10 +4,9 @@
 #techarena51.com
 
 #DECLARE VARIABLES
-backup_dir="/data"
-server_backup_dir="user@yourserver.com:/path/to/storebackup"
+backup_dir="/home/wolffj/src/"
+server_backup_dir="ubuntu@192.52.2.225:/home/ubuntu/data/src/"
 log_dir="backuperrors.txt"
-email="you@youremail.com"
 #My own man pages say nothing about what 0 means, but from digging around, it seems to mean the current process group. Since the script get's it's own process group, this ends up sending SIGHUP to all the script's children, foreground and background.
 #http://stackoverflow.com/questions/1644856/terminate-running-commands-when-shell-script-is-killed
 trap 'kill -HUP 0' EXIT
@@ -15,13 +14,14 @@ trap 'kill -HUP 0' EXIT
 #FUNCTION TO USE RYSNC TO BACKUP DIRECTORIES
 function backup () {
 
-if rsync -avz --delete $backup_dir $server_backup_dir  2>&1 >>$log_dir
-then
-du -sh $backup_dir| mail -s "backup succeeded $backup_dir" $email
-else
-mail -s "rysnc failed on $backup_dir" $email < $log_dir
-return 1
-fi
+rsync -avz -e 'ssh -i wolffj.pem' $backup_dir  $server_backup_dir 
+# if rsync -avz --delete $backup_dir $server_backup_dir  2>&1 >>$log_dir
+# then
+# du -sh $backup_dir
+# else
+# mail -s "rysnc failed on $backup_dir" $email < $log_dir
+# return 1
+# fi
 }
 
 
