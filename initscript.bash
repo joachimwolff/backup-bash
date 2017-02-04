@@ -21,7 +21,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="path/to/backup"
+exec="/home/wolffj/bwcloud/backup"
 prog="backup"
 
 
